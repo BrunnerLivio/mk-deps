@@ -1,0 +1,5 @@
+mk-deps (0.0.1) xenial; urgency=medium
+
+  * Initial release
+
+ -- Livio Brunner <livio.brunner.lb1@roche.com>  Tue, 07 Feb 2017 13:34:00 +0100

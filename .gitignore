@@ -1,0 +1,21 @@
+# editor
+.vscode
+
+# vim swap files
+*.swp
+
+# python bytecode files
+__pycache__/
+
+# virtualenv files
+env/
+
+# packaging files
+*.egg-info
+.pybuild/
+debian/debhelper-build-stamp
+debian/files
+debian/*.debhelper*
+debian/*.substvars
+debian/mk-deps/
+.cache

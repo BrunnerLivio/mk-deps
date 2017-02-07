@@ -1,0 +1,14 @@
+Source: mk-deps
+Maintainer: Livio Brunner <livio.brunner.lb1@roche.com>
+Section: python
+Priority: optional
+Build-Depends: python3-all, python3-setuptools, debhelper (>= 9), dh-python, python3-pytest
+Standards-Version: 3.9.7
+
+Package: mk-deps
+Architecture: all
+Depends: ${misc:Depends}, ${python3:Depends}, python3-apt, python3-debian
+Description: Cli tool for installing runtime dependencies of a debian package
+ This cli can install runtime dependencies of a debian/control file, without
+ installing the actual package. This brings the advantage, that you must not 
+ install the package itself, in order to run the package from source
