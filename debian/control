@@ -9,6 +9,6 @@ Package: mk-deps
 Architecture: all
 Depends: ${misc:Depends}, ${python3:Depends}, python3-apt, python3-debian
 Description: Cli tool for installing runtime dependencies of a debian package
- This cli can install runtime dependencies of a debian/control file, without
+ mk-deps can install runtime dependencies of a debian/control file, without
  installing the actual package. This brings the advantage, that you must not 
  install the package itself, in order to run the package from source

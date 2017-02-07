@@ -1,0 +1,34 @@
+.de EX
+.ne 5
+.if n .sp 1
+.if t .sp .5
+.nf
+.in +.5i
+..
+.de EE
+.fi
+.in -.5i
+.if n .sp 1
+.if t .sp .5
+..
+.TH MK-DEPS 1 "February 07, 2017"
+.SH NAME
+mk-deps \- Cli tool for installing runtime dependencies of a debian package
+.SH SYNOPSIS
+.B mk-deps
+.RI [OPTIONS]
+.SH DESCRIPTION
+mk-deps can install runtime dependencies of a debian/control file, without
+installing the actual package. This brings the advantage, that you must not 
+.SS "OPTIONS"
+.TP
+\fB\-\-help\fR
+Display help message
+.TP
+\fB\-\-version\fR
+Print version information
+.TP
+\fB\-i\fR \fB\-\-install\fR
+Install the generated packages and its runtime-dependencies
+.SH AUTHOR
+Written by Livio Brunner <livio.brunner.lb1@roche.com>
