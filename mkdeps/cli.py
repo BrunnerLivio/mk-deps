@@ -19,6 +19,11 @@ def main():
     parser.add_argument("--version",
                         action="store_true",
                         help="Show version and copyright information.")
+
+    parser.add_argument("--dry-run",
+                        action="store_true",
+                        help="Run the command without actually installing packages")
+
     args = parser.parse_args()
 
     if args.version:
@@ -26,6 +31,9 @@ def main():
 
     if args.install:
         install_dependencies(args.install)
+
+    if args["dry-run"]:
+        print("dry run")
 
     sys.exit()
 
