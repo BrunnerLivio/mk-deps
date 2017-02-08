@@ -8,10 +8,10 @@
 """
 import re
 import apt
+import logging
 from debian import deb822
 
 from . import __VERSION__
-
 
 def print_version():
     """
@@ -41,63 +41,71 @@ def install_package(pkg_name):
 
 
     if pkg.is_installed:
-        print("{pkg_name} already installed".format(pkg_name=pkg_name))
+        logging.info("%s already installed", pkg_name)
 
     else:
-        print("{pkg_name} installing".format(pkg_name=pkg_name))
+        logging.info("%s installing", pkg_name)
         pkg.mark_install()
         cache.commit()
 
-def install_packages(deps):
+def install_packages(deps, dry_run=False):
     """
     Installs all packages from the given array.
     If multiple dependecies options are given, it
     tries to install them one after another, until one succeeds
     Args:
         deps: List of dependecies
+        dry_run (bool): Run the command without actually installing packages
     """
     if len(deps) == 1:
         pkg_name = deps[0]["name"]
         if pkg_name == "${misc:Depends}":
             return
-
         try:
-            install_package(pkg_name)
+            if dry_run:
+                print(pkg_name)
+            else:
+                install_package(pkg_name)
         except Exception as exception: #pylint: disable=W0703
-            print(str(exception))
+            logging.warning(str(exception))
     else:
         for index, dep in enumerate(deps):
             try:
+                pkg_name = dep["name"]
                 if index:
-                    print("Try installing {pkg_name} instead".
-                          format(pkg_name=dep["name"]))
-                install_package(dep["name"])
+                    logging.info("Try installing %s instead",
+                                 pkg_name)
+                if dry_run:
+                    print(pkg_name)
+                else:
+                    install_package(pkg_name)
                 break
             except Exception as exception: #pylint: disable=W0703
-                print(str(exception))
+                logging.warning(str(exception))
 
-def parse_package(content):
+def parse_package(content, dry_run=False):
     """
     Parses the file and installs the runtime dependencies
     Args:
         content (str): The content of the package
+        dry_run (bool): Run the command without actually installing packages
     """
     pkgs = deb822.Packages.iter_paragraphs(content)
-
     for pkg in pkgs:
         if pkg["package"]:
             name = pkg["package"]
-            print("==Installing packages of {pkg_name}".format(pkg_name=name))
+            logging.info("==Installing packages of %s", pkg_name=name)
             rels = pkg.relations
             for deps in rels["depends"]:
-                install_packages(deps)
+                install_packages(deps, dry_run)
 
-def install_dependencies(control_file):
+def install_dependencies(control_file, dry_run=False):
     """
     Installs the dependencies of the given control file name.
 
     Args:
         control_file (str): The name of the debian/control file
+        dry_run (bool): Run the command without actually installing packages
     """
     file = open(control_file, "r")
     content = file.read()
@@ -105,4 +113,4 @@ def install_dependencies(control_file):
     matches = re.finditer(regex, content, re.MULTILINE | re.DOTALL)
 
     for _, match in enumerate(matches):
-        parse_package(match.group(1))
+        parse_package(match.group(1), dry_run)

@@ -5,6 +5,7 @@
     :license: MIT, see LICENESE for details
 """
 import sys
+import logging
 import argparse
 from .core import install_dependencies, print_version
 
@@ -29,11 +30,14 @@ def main():
     if args.version:
         print_version()
 
-    if args.install:
-        install_dependencies(args.install)
+    if args.install and not args.dry_run:
+        install_dependencies(args.install, False)
 
-    if args["dry-run"]:
-        print("dry run")
+    if args.dry_run:
+        if args.install:
+            install_dependencies(args.install, True)
+        else:
+            logging.warning("You must specify the debian/control file using the '--install'-option")
 
     sys.exit()
 
