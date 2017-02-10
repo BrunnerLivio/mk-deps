@@ -75,6 +75,28 @@ def get_dependency_names(content):
                     dependencies.append(or_dependencies)
     return dependencies
 
+def remove_variables(text):
+    """
+    Removes variables like ${misc:Depends}
+
+    Args:
+        text (str): The text to replace the variables
+    Returns:
+        str: The text without the variables
+    """
+    return re.sub(r"(\(.*\${.*}.*\))", "", text)
+
+def is_variable(text):
+    """
+    Checks if the given string is a variable in the format
+    ${*}
+
+    Args:
+        text (str): The text which should be checked
+    Returns
+        str: If the text contains a variable
+    """
+    return re.match(r"(\${.*})", text) is not None
 def install_dependencies(control_file, dry_run=False):
     """
     Installs the dependencies of the given control file name.
@@ -84,7 +106,7 @@ def install_dependencies(control_file, dry_run=False):
         dry_run (bool): Run the command without actually installing packages
     """
     file = open(control_file, "r")
-    content = file.read()
+    content = remove_variables(file.read())
     regex = r"^(Package:.+?(?=(Package:|\Z)))"
     matches = re.finditer(regex, content, re.MULTILINE | re.DOTALL)
 
@@ -93,21 +115,25 @@ def install_dependencies(control_file, dry_run=False):
         for dependency in dependencies:
             if isinstance(dependency, list):
                 for or_dependency in dependency:
+                    # If is not a variable..
+                    if not is_variable(or_dependency):
+                        if dry_run:
+                            print(or_dependency)
+                        else:
+                            try:
+                                install_package(or_dependency)
+                                break
+                            except Exception:
+                                logging.warning("Could not install the package %s",
+                                                or_dependency)
+            else:
+                # If is not a variable..
+                if not is_variable(dependency):
                     if dry_run:
-                        print(or_dependency)
+                        print(dependency)
                     else:
                         try:
-                            install_package(or_dependency)
-                            break
+                            install_package(dependency)
                         except Exception:
                             logging.warning("Could not install the package %s",
-                                            or_dependency)
-            else:
-                if dry_run:
-                    print(dependency)
-                else:
-                    try:
-                        install_package(dependency)
-                    except Exception:
-                        logging.warning("Could not install the package %s",
-                                        dependency)
+                                            dependency)

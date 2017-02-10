@@ -1,0 +1,2 @@
+include tests/input/*
+include tests/refs/*

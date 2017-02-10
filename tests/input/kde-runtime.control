@@ -1,0 +1,175 @@
+Source: kde-runtime
+Section: kde
+Priority: optional
+Maintainer: Debian/Kubuntu Qt/KDE Maintainers <debian-qt-kde@lists.debian.org>
+Uploaders: Sune Vuorela <sune@debian.org>,
+           Fathi Boudra <fabo@debian.org>,
+           Modestas Vainius <modax@debian.org>,
+           George Kiagiadakis <kiagiadakis.george@gmail.com>,
+           Eshat Cakar <info@eshat.de>,
+           Maximiliano Curia <maxy@debian.org>
+Build-Depends: cmake,
+               debhelper (>= 9),
+               kde-sc-dev-latest (>= 4:4.12),
+               kdelibs5-dev (>= 4:4.9.95~),
+               kdepimlibs5-dev,
+               kdoctools (>= 4:4.11),
+               libasound2-dev (>= 1.0.14a) [linux-any],
+               libattica-dev (>= 0.1.4),
+               libboost-dev,
+               libbz2-dev,
+               libcanberra-dev,
+               libexiv2-dev (>= 0.12),
+               libgcrypt20-dev (>= 1.5.0~),
+               libgpgme11-dev,
+               libjpeg-dev,
+               libkactivities-dev,
+               liblzma-dev,
+               libnm-util-dev (>= 0.7) [linux-any],
+               libntrack-qt4-dev [linux-any],
+               libopenexr-dev,
+               libphonon-dev (>= 4:4.6.0really4.4.3),
+               libpulse-dev (>= 0.9.16),
+               libqca2-dev (>= 2.0.0),
+               libqtwebkit-dev,
+               libqzeitgeist-dev,
+               libslp-dev,
+               libsmbclient-dev [!hurd-any],
+               libsoprano-dev,
+               libssh-gcrypt-dev (>= 0.4.0),
+               libwebp-dev,
+               libx11-dev,
+               libxcursor-dev,
+               network-manager-dev (>= 0.7.0) [linux-any],
+               pkg-config,
+               pkg-kde-tools (>= 0.12),
+               shared-mime-info
+Standards-Version: 3.9.6
+XS-Testsuite: autopkgtest
+Homepage: http://www.kde.org/
+Vcs-Browser: http://anonscm.debian.org/cgit/pkg-kde/applications/kde-runtime.git
+Vcs-Git: git://anonscm.debian.org/pkg-kde/applications/kde-runtime.git
+
+Package: kde-runtime
+Architecture: any
+Depends: breeze-icon-theme,
+         kde-runtime-data (>= ${source:Version}),
+         kde-style-breeze-qt4,
+         kdelibs5-plugins,
+         oxygen-icon-theme (>= 4:4.6),
+         plasma-scriptengine-javascript (= ${binary:Version}),
+         ${misc:Depends},
+         ${perl:Depends},
+         ${shlibs:Depends}
+Recommends: icoutils,
+            libcanberra-pulse | libcanberra-gstreamer,
+            sound-theme-freedesktop,
+            udisks2,
+            upower
+Suggests: djvulibre-bin, finger
+Replaces: kde-runtime-data (<< 4:4.13.97),
+          kdebase-runtime-bin-kde4,
+          kdebase-workspace-bin (<< 4:4.6),
+          kdebluetooth (<< 1.0~beta7-1),
+          kdelibs5-plugins (<< 4:4.5),
+          plasma-netbook (<< 4:4.5.95)
+Breaks: kde-runtime-data (<< 4:4.13.97),
+        kdebase-runtime-bin-kde4,
+        kdebase-workspace-bin (<< 4:4.6),
+        kdebluetooth (<< 1.0~beta7-1),
+        kdelibs5-plugins (<< 4:4.5),
+        plasma-netbook (<< 4:4.5.95)
+Conflicts: kdelibs4-dev
+Description: runtime components from the official KDE release
+ KDE is produced by an international technology team that creates free and open
+ source software for desktop and portable computing. Among KDE's products are a
+ modern desktop system for Linux and UNIX platforms, comprehensive office
+ productivity and groupware suites and hundreds of software titles in many
+ categories including Internet and web applications, multimedia, entertainment,
+ educational, graphics and software development.
+ .
+ This package contains programs and data needed at runtime by KDE applications.
+
+Package: kdebase-runtime
+Section: oldlibs
+Priority: extra
+Architecture: all
+Depends: kde-runtime, ${misc:Depends}
+Description: Transitional package for the KDE runtime components
+ KDE is produced by an international technology team that creates free and open
+ source software for desktop and portable computing. Among KDE's products are a
+ modern desktop system for Linux and UNIX platforms, comprehensive office
+ productivity and groupware suites and hundreds of software titles in many
+ categories including Internet and web applications, multimedia, entertainment,
+ educational, graphics and software development.
+ .
+ This transitional package takes care of pulling in the new kde-runtime package
+ and can safely be removed after installation.
+
+Package: kde-runtime-data
+Architecture: all
+Depends: ${misc:Depends}, ${perl:Depends}
+Replaces: kcontrol,
+          kde-runtime (<< 4:4.13.90),
+          kde-workspace-bin (<< 4:4.10),
+          kdebase-bin-kde3,
+          kdebase-kio-plugins,
+          kdebase-runtime-data (<< 4:4.7.2),
+          kdebase-runtime-data-common,
+          kdebase-workspace-bin (<< 4:4.5.95),
+          kdelibs5-data (<< 4:4.5),
+          plasma-netbook (<< 4:4.5.95),
+          plasma-widget-networkmanagement (<< 0.1+git20110422.810bc16-1+)
+Breaks: kcontrol,
+        kde-runtime (<< 4:4.13.90),
+        kde-workspace-bin (<< 4:4.10),
+        kdebase-bin-kde3,
+        kdebase-kio-plugins,
+        kdebase-runtime-data (<< 4:4.7.2),
+        kdebase-runtime-data-common,
+        kdebase-workspace-bin (<< 4:4.5.95),
+        kdelibs5-data (<< 4:4.5),
+        plasma-netbook (<< 4:4.5.95),
+        plasma-widget-networkmanagement (<< 0.1+git20110422.810bc16-1+)
+Description: shared data files for the KDE base runtime module
+ This package contains the architecture-independent shared data files needed to
+ run KDE applications.
+ .
+ This package is part of the KDE base runtime module.
+
+Package: plasma-scriptengine-javascript
+Architecture: any
+Depends: ${misc:Depends}, ${shlibs:Depends}
+Description: JavaScript script engine for Plasma
+ This package provides the JavaScript script engine for Plasma. You have to
+ install it if you want to use Plasma widgets and data engines written in
+ JavaScript.
+ .
+ This package is part of the KDE base runtime module.
+
+Package: kde-runtime-dbg
+Section: debug
+Architecture: any
+Priority: extra
+Depends: kde-runtime (= ${binary:Version}), kdelibs5-dbg, ${misc:Depends}
+Replaces: kdebase-runtime-dbg (<< 4:4.7.2),
+          kdebase-workspace-dbg (<< 4:4.6),
+          kdelibs5-dbg (<< 4:4.5)
+Breaks: kdebase-runtime-dbg (<< 4:4.7.2),
+        kdebase-workspace-dbg (<< 4:4.6),
+        kdelibs5-dbg (<< 4:4.5)
+Conflicts: kdelibs-dbg
+Description: debugging symbols for KDE base runtime module
+ This package contains the debugging symbols associated with kde-runtime.
+ They will automatically be used by gdb for debugging kde-runtime related
+ issues.
+
+Package: kdebase-runtime-dbg
+Section: oldlibs
+Architecture: all
+Priority: extra
+Depends: kde-runtime-dbg, ${misc:Depends}
+Description: transitional package for kde-runtime-dbg
+ This is a dummy transitional package for kde-runtime-dbg and can be safely
+ removed after the installation is complete.
+

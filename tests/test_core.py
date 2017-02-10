@@ -1,6 +1,6 @@
 import pytest
 
-from mkdeps.core import get_dependency_names
+from mkdeps.core import get_dependency_names, remove_variables, is_variable
 
 def test_dep():
     """
@@ -50,4 +50,21 @@ Description: log package build information of grml-live to database
     assert dependencies[3][0] == "libtimedate-perl"
     assert dependencies[3][1] == "test"
 
+def test_remove_variables():
+    """
+    Test remove_variables() method by using
+    an example string
+    """
+    input_text = "Depends: (>= ${source:Version})"
+    output_text = remove_variables(input_text)
+    assert output_text == "Depends: "
 
+def test_is_variable():
+    """
+    Test is_variable() method by using
+    an example string
+    """
+    input_text = "${misc:Depends}"
+    assert is_variable(input_text)
+    input_text = "grml-live"
+    assert not is_variable(input_text)
