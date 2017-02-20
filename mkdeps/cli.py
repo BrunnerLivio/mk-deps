@@ -17,6 +17,9 @@ def main():
     parser.add_argument("-i", "--install",
                         help="Install the generated packages and its runtime-dependencies.")
 
+    parser.add_argument("-p", "--package",
+                        help="Installs just the given package from the given control file")
+
     parser.add_argument("--version",
                         action="store_true",
                         help="Show version and copyright information.")
@@ -31,11 +34,11 @@ def main():
         print_version()
 
     if args.install and not args.dry_run:
-        install_dependencies(args.install, False)
+        install_dependencies(args.install, args.package, False)
 
     if args.dry_run:
         if args.install:
-            install_dependencies(args.install, True)
+            install_dependencies(args.install, args.package, True)
         else:
             logging.warning("You must specify the debian/control file using the '--install'-option")
 

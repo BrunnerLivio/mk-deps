@@ -48,20 +48,24 @@ def install_package(pkg_name):
         pkg.mark_install()
         cache.commit()
 
-def get_dependency_names(content):
+def get_dependency_names(content, package_name=None):
     """
-    Parses the dependencies of the package and returns 
+    Parses the dependencies of the package and returns
     them as a string array
     Args:
         content (str): The content of the package
+        package_name (str): The name of the package, which
+        dependency names should get returned
     Returns:
         list of str: The dependencies of the given file
     """
     pkgs = deb822.Packages.iter_paragraphs(content)
+    dependencies = []
     for pkg in pkgs:
-        if pkg["package"]:
+        # When "parsed correctly" AND if package_name is set, the package_name equals
+        # the parsed packagename
+        if pkg["package"] and (not package_name or package_name == pkg["package"]):
             rels = pkg.relations
-            dependencies = []
             for deps in rels["depends"]:
                 if len(deps) == 1:
                     pkg_name = deps[0]["name"]
@@ -97,12 +101,14 @@ def is_variable(text):
         str: If the text contains a variable
     """
     return re.match(r"(\${.*})", text) is not None
-def install_dependencies(control_file, dry_run=False):
+def install_dependencies(control_file, package_name=None, dry_run=False):
     """
     Installs the dependencies of the given control file name.
 
     Args:
         control_file (str): The name of the debian/control file
+        package_name (str): The name of the package which only should get installed from
+        the control file
         dry_run (bool): Run the command without actually installing packages
     """
     file = open(control_file, "r")
@@ -111,7 +117,7 @@ def install_dependencies(control_file, dry_run=False):
     matches = re.finditer(regex, content, re.MULTILINE | re.DOTALL)
 
     for _, match in enumerate(matches):
-        dependencies = get_dependency_names(match.group(1))
+        dependencies = get_dependency_names(match.group(1), package_name)
         for dependency in dependencies:
             if isinstance(dependency, list):
                 for or_dependency in dependency:

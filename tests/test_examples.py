@@ -12,7 +12,7 @@ REFS_PATH = os.path.join(CWD, "refs")
 def test_examples(capsys):
     examples = os.listdir(INPUT_PATH)
     for example in examples:
-        install_dependencies(os.path.join(INPUT_PATH, example), True)
+        install_dependencies(os.path.join(INPUT_PATH, example), None, True)
 
         result_string, _ = (capsys.
                             readouterr())

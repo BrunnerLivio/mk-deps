@@ -4,6 +4,7 @@ Cli tool for installing runtime dependencies of a debian package
 ```
 mk-deps [OPTIONS]
 mk-deps --install debian/control
+mk-deps --install debian/control -p {PACKAGE_NAME}
 ```
 # Installation
 
