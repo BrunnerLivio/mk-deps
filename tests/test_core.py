@@ -1,4 +1,7 @@
-import pytest
+"""
+Test the core functionality of mk-deps
+"""
+import pytest # pylint: disable=unused-import
 
 from mkdeps.core import get_dependency_names, remove_variables, is_variable
 

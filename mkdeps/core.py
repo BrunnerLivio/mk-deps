@@ -7,8 +7,8 @@
     :license: MIT, see LICENESE for details
 """
 import re
-import apt
 import logging
+import apt
 from debian import deb822
 
 from . import __VERSION__
