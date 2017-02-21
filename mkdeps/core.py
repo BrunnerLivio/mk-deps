@@ -49,6 +49,28 @@ def install_package(pkg_name):
         pkg.mark_install()
         cache.commit()
 
+def try_install_package(pkg_name):
+    """
+    Tries to install the package using apt. If it fails, it
+    returns false and logs the error.
+
+    Args:
+        pkg_name: The name of the package
+    Returns:
+        bool: If it was able to install
+    """
+    try:
+        install_package(pkg_name)
+    except apt.cache.LockFailedException:
+        logging.warning("Could not install the package %s. Did you run with sudo?",
+                        pkg_name)
+        return False
+    except KeyError:
+        logging.warning("Package %s not found in cache.",
+                        pkg_name)
+        return False
+    return True
+
 def get_dependency_names(content, package_name=None):
     """
     Parses the dependencies of the package and returns
@@ -129,20 +151,11 @@ def install_dependencies(control_file, package_name=None, dry_run=False):
                         if dry_run:
                             print(or_dependency)
                         else:
-                            try:
-                                install_package(or_dependency)
-                                break
-                            except Exception:
-                                logging.warning("Could not install the package %s",
-                                                or_dependency)
+                            try_install_package(or_dependency)
             else:
                 # If is not a variable..
                 if not is_variable(dependency):
                     if dry_run:
                         print(dependency)
                     else:
-                        try:
-                            install_package(dependency)
-                        except Exception:
-                            logging.warning("Could not install the package %s",
-                                            dependency)
+                        try_install_package(dependency)
