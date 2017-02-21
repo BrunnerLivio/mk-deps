@@ -7,6 +7,7 @@
     :license: MIT, see LICENESE for details
 """
 import re
+import warnings
 import logging
 import apt
 from debian import deb822
@@ -111,12 +112,14 @@ def install_dependencies(control_file, package_name=None, dry_run=False):
         the control file
         dry_run (bool): Run the command without actually installing packages
     """
+    warnings.simplefilter("ignore", UserWarning)
     file = open(control_file, "r")
     content = remove_variables(file.read())
     regex = r"^(Package:.+?(?=(Package:|\Z)))"
     matches = re.finditer(regex, content, re.MULTILINE | re.DOTALL)
 
     for _, match in enumerate(matches):
+        dependencies = []
         dependencies = get_dependency_names(match.group(1), package_name)
         for dependency in dependencies:
             if isinstance(dependency, list):
