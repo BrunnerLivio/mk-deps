@@ -11,6 +11,7 @@ import warnings
 import logging
 import apt
 from debian import deb822
+from .exit_status import ExitStatus
 
 from . import __VERSION__
 
@@ -57,19 +58,19 @@ def try_install_package(pkg_name):
     Args:
         pkg_name: The name of the package
     Returns:
-        bool: If it was able to install
+        int: Error codes if it was able to install (= 0) or not (> 0)
     """
     try:
         install_package(pkg_name)
     except apt.cache.LockFailedException:
         logging.warning("Could not install the package %s. Did you run with sudo?",
                         pkg_name)
-        return False
+        return ExitStatus.UNABLE_TO_INSTALL
     except KeyError:
         logging.warning("Package %s not found in cache.",
                         pkg_name)
-        return False
-    return True
+        return ExitStatus.NOT_FOUND
+    return ExitStatus.SUCCESS
 
 def get_dependency_names(content, package_name=None):
     """
@@ -133,7 +134,10 @@ def install_dependencies(control_file, package_name=None, dry_run=False):
         package_name (str): The name of the package which only should get installed from
         the control file
         dry_run (bool): Run the command without actually installing packages
+    Returns:
+        int: The exit code of the program
     """
+    return_code = ExitStatus.SUCCESS
     warnings.simplefilter("ignore", UserWarning)
     file = open(control_file, "r")
     content = remove_variables(file.read())
@@ -143,19 +147,27 @@ def install_dependencies(control_file, package_name=None, dry_run=False):
     for _, match in enumerate(matches):
         dependencies = []
         dependencies = get_dependency_names(match.group(1), package_name)
-        for dependency in dependencies:
-            if isinstance(dependency, list):
-                for or_dependency in dependency:
+        if len(dependencies) > 0:
+            for dependency in dependencies:
+                if isinstance(dependency, list):
+                    for or_dependency in dependency:
+                        # If is not a variable..
+                        if not is_variable(or_dependency):
+                            if dry_run:
+                                print(or_dependency)
+                            else:
+                                return_value = try_install_package(or_dependency)
+                                if return_value == 0:
+                                    break
+                                else:
+                                    return_code = return_value
+                else:
                     # If is not a variable..
-                    if not is_variable(or_dependency):
+                    if not is_variable(dependency):
                         if dry_run:
-                            print(or_dependency)
+                            print(dependency)
                         else:
-                            try_install_package(or_dependency)
-            else:
-                # If is not a variable..
-                if not is_variable(dependency):
-                    if dry_run:
-                        print(dependency)
-                    else:
-                        try_install_package(dependency)
+                            return_value = try_install_package(dependency)
+                            if return_value > 0:
+                                return_code = return_value
+    return return_code

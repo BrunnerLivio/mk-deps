@@ -35,6 +35,17 @@ Run the command without actually installing packages, just printing out the depe
 Install the generated packages and its runtime-dependencies
 .TP
 \fB\-p\fR \fB\-\-package\fR
-Install only the runtime-dependencies of the given package of the controlfile 
+Install only the runtime-dependencies of the given package of the controlfile
+.SH EXIT-STATUS
+.TP
+.B 0
+Successful program execution
+.TP
+.B 1
+Unable to install a package
+.TP
+.B 2
+Package not found in cache
+.TP
 .SH AUTHOR
 Written by Livio Brunner <livio.brunner.lb1@roche.com>
