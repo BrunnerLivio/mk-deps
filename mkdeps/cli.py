@@ -40,7 +40,9 @@ def main():
         print_version()
 
     if args.install and not args.dry_run:
+        print("\033[94mInstalling runtime dependencies..\033[0m")
         exit_status = install_dependencies(args.install, args.package, False)
+        print("\033[92mDone!\033[0m")
 
     if args.dry_run:
         if args.install:
