@@ -66,6 +66,8 @@ def try_install_package(pkg_name):
         logging.warning("Could not install the package %s. Did you run with sudo?",
                         pkg_name)
         return ExitStatus.UNABLE_TO_INSTALL
+    except SystemError:
+        logging.warning("Package %s could not be installed", pkg_name)
     except KeyError:
         logging.warning("Package %s not found in cache.",
                         pkg_name)
