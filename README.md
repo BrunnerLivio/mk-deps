@@ -1,5 +1,8 @@
 # mk-deps
 Cli tool for installing runtime dependencies of a debian package
+
+![Preview of mk-deps](http://i.imgur.com/6pQzSot.gif)
+
 # Usage
 ```
 mk-deps [OPTIONS]
