@@ -1,0 +1,6 @@
+* text=auto
+
+*.py text
+*.md text
+*.in text
+*.control text
