@@ -66,8 +66,14 @@ def try_install_package(pkg_name):
         logging.warning("Could not install the package %s. Did you run with sudo?",
                         pkg_name)
         return ExitStatus.UNABLE_TO_INSTALL
+    except apt.cache.FetchFailedException as exception:
+        logging.warning("Fetch failed during : %s, " +
+                        "and therefor skipped the installation", pkg_name)
+        logging.warning("%s", str(exception))
+        return ExitStatus.UNABLE_TO_INSTALL
     except SystemError:
         logging.warning("Package %s could not be installed", pkg_name)
+        return ExitStatus.UNABLE_TO_INSTALL
     except KeyError:
         logging.warning("Package %s not found in cache.",
                         pkg_name)
