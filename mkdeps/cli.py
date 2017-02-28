@@ -4,6 +4,7 @@
     :copyright: (c) by Livio Brunner
     :license: MIT, see LICENESE for details
 """
+# PYTHON_ARGCOMPLETE_OK
 import sys
 import logging
 import argparse
