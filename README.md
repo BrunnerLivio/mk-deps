@@ -29,7 +29,7 @@ Use the Docker file to create your image and play around with mk-deps, without p
 your main system
 
 1. Install Docker, following the instructions https://docs.docker.com/engine/installation/
-2. Build your docker image: `docker build -t $USER/mk-deps .`
+2. Build your docker image: `docker build --pull -t $USER/mk-deps .`
 3. Create a container from this image: `docker run -t -i $USER/mk-deps bash`
 
 4. Build and install the package inside the container `debuild -us -uc && dpkg -i ../mk-deps*.deb`
