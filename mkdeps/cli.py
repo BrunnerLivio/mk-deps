@@ -2,7 +2,7 @@
     `mk-deps` - Cli tool for installing runtime dependencies of a debian package
 
     :copyright: (c) by Livio Brunner
-    :license: MIT, see LICENESE for details
+    :license: See LICENESE for details
 """
 # PYTHON_ARGCOMPLETE_OK
 import sys

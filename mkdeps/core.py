@@ -4,7 +4,7 @@
     This module contains the core functionallity.
 
     :copyright: (c) by Livio Brunner
-    :license: MIT, see LICENESE for details
+    :license: See LICENESE for details
 """
 import re
 import warnings
