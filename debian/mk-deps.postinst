@@ -23,8 +23,6 @@ set -e
 case "$1" in
 
   configure)
-    pip3 install argcomplete
-    register-python-argcomplete3 mk-deps > /etc/bash_completion.d/mk-deps
   ;;
 
   abort-upgrade|abort-remove|abort-deconfigure)

@@ -2,7 +2,7 @@ Source: mk-deps
 Maintainer: Livio Brunner <livio.brunner.lb1@roche.com>
 Section: python
 Priority: optional
-Build-Depends: python3-all, python3-setuptools, debhelper (>= 9), dh-python, python3-pytest, python3-pip
+Build-Depends: python3-all, python3-setuptools, debhelper (>= 9), dh-python, python3-pytest, python3-click
 Standards-Version: 3.9.7
 
 Package: mk-deps

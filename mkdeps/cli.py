@@ -4,54 +4,42 @@
     :copyright: (c) by Livio Brunner
     :license: See LICENESE for details
 """
-# PYTHON_ARGCOMPLETE_OK
 import sys
 import logging
-import argparse
-import argcomplete
+import click
 
 from .core import install_dependencies, print_version
 from .exit_status import ExitStatus
 
-
-def main():
+@click.group()
+@click.option("--version",
+              count=True,
+              default=False,
+              help="Show version and copyright information")
+def cli(version):
     """
     Install runtime dependencies of a debian package
     """
-    exit_status = ExitStatus.SUCCESS
-    parser = argparse.ArgumentParser(description="Install runtime dependencies")
-    parser.add_argument("-i", "--install",
-                        help="Install the generated packages and its runtime-dependencies.")
-
-    parser.add_argument("-p", "--package",
-                        help="Installs just the given package from the given control file")
-
-    parser.add_argument("--version",
-                        action="store_true",
-                        help="Show version and copyright information.")
-
-    parser.add_argument("--dry-run",
-                        action="store_true",
-                        help="Run the command without actually installing packages")
-
-    argcomplete.autocomplete(parser)
-    args = parser.parse_args()
-
-    if args.version:
+    if version:
         print_version()
 
-    if args.install and not args.dry_run:
-        print("\033[94mInstalling runtime dependencies..\033[0m")
-        exit_status = install_dependencies(args.install, args.package, False)
-        print("\033[92mDone!\033[0m")
+@cli.command()
+@click.option("--package",
+              help="Installs just the given package from the given control file")
+@click.option("--dry-run",
+              count=True,
+              default=False,
+              help="Run the command without actually installing packages")
+@click.argument("control_file")
+def install(package, dry_run, control_file):
+    """
+    Install runtime-dependencies a debian package
+    """
 
-    if args.dry_run:
-        if args.install:
-            exit_status = install_dependencies(args.install, args.package, True)
-        else:
-            logging.warning("You must specify the debian/control file using the '--install'-option")
+    exit_status = ExitStatus.SUCCESS
+
+    print("\033[94mInstalling runtime dependencies..\033[0m")
+    exit_status = install_dependencies(control_file, package, dry_run)
+    print("\033[92mDone!\033[0m")
 
     sys.exit(exit_status)
-
-if __name__ == '__main__':
-    main()
