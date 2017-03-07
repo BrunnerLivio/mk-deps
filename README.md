@@ -1,13 +1,13 @@
 # mk-deps
 Cli tool for installing runtime dependencies of a debian package
 
-![Preview of mk-deps](http://i.imgur.com/6pQzSot.gif)
+![Preview of mk-deps](http://i.imgur.com/O0meHOW.gif)
 
 # Usage
 ```
 mk-deps [OPTIONS]
-mk-deps --install debian/control
-mk-deps --install debian/control -p {PACKAGE_NAME}
+mk-deps install debian/control
+mk-deps install debian/control -p {PACKAGE_NAME}
 ```
 # Installation
 
@@ -33,7 +33,7 @@ your main system
 3. Create a container from this image: `docker run -t -i $USER/mk-deps bash`
 
 4. Build and install the package inside the container `debuild -us -uc && dpkg -i ../mk-deps*.deb`
-5. Play around `mk-deps --install tests/input/tsp-web.control`
+5. Play around `mk-deps install tests/input/tsp-web.control`
 
 
 # Limits
