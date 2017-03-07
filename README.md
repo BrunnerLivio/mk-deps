@@ -21,7 +21,7 @@ debuild -us -uc # Build the package
 sudo dpkg -i ../mk-deps*.deb # Install the package
 ```
 
-3. To enable autocompletion, run `source /etc/profile` or open a new shell
+3. To enable autocompletion, run `source /usr/share/bash_completion/completions/mk-deps-complete.sh` or open a new shell
 
 ## Try it out with docker
 

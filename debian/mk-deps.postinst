@@ -23,6 +23,7 @@ set -e
 case "$1" in
 
   configure)
+    pip3 install click-man
   ;;
 
   abort-upgrade|abort-remove|abort-deconfigure)

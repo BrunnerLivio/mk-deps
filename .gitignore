@@ -19,3 +19,4 @@ debian/*.debhelper*
 debian/*.substvars
 debian/mk-deps/
 .cache
+man
