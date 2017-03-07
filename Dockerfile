@@ -13,3 +13,6 @@ RUN pip3 install click-man
 RUN mkdir -p /mk-deps
 COPY . /mk-deps
 WORKDIR /mk-deps 
+
+RUN debuild -us -uc
+RUN dpkg -i ../*.deb
