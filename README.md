@@ -15,8 +15,9 @@ mk-deps install debian/control -p {PACKAGE_NAME}
 1. Clone the repository
 2. Run the following commands
 ```
-sudo apt-get install fakeroot dh-make build-essential devscripts # Packages nessesary for building package
-cd mk-deps
+sudo apt-get install fakeroot dh-make build-essential devscripts # Packages nessesary for building package python3-all python3-pytest python3-click
+sudo pip3 install wheel click-man
+cd mk-deps/debian
 debuild -us -uc # Build the package
 sudo dpkg -i ../mk-deps*.deb # Install the package
 ```
